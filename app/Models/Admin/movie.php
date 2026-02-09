@@ -6,5 +6,39 @@ use Illuminate\Database\Eloquent\Model;
 
 class movie extends Model
 {
-    //
+    protected $table = 'movie';
+    protected $primaryKey = 'movieID';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'movieTitle',
+        'description',
+        'director',
+        'poster',
+        'trailer',
+        'releaseDate',
+        'ageRatingID',
+        'studioID'
+    ];
+
+    public function ageRating() {
+        return $this->belongsTo(AgeRating::class, 'ageRatingID');
+    }
+
+    public function studio() {
+        return $this->belongsTo(Studio::class, 'studioID');
+    }
+
+    public function genres() {
+        return $this->belongsToMany(
+            Genre::class,
+            'genreDetail',
+            'movieID',
+            'genreID'
+        );
+    }
+
+    public function showTimes() {
+        return $this->hasMany(ShowTime::class, 'movieID');
+    }
 }
