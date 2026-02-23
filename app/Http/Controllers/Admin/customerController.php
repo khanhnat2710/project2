@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Admin\customer;
+
+class customerController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $customers = customer::all();
+        return view('customer.index', ['customers' => $customers]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('customer/create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'fullName' => 'required',
+            'email' => 'required|email|unique:customers,email',
+            'phoneNumber' => 'required',
+            'address' => 'required',
+            'password' => 'required|string|min:8'
+        ]);
+
+        $customers = new customer();
+        $customers->fullname = $request->input('fullName');
+        $customers->email = $request->input('email');
+        $customers->phoneNumber = $request->input('phoneNumber');
+        $customers->address = $request->input('address');
+        $customers->password = $request->input('password');
+        $customers->save();
+
+        return redirect()->route('customer.index')->with('success', 'Tạo thành công');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
