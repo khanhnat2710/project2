@@ -13,6 +13,8 @@
             <th>Họ tên</th>
             <th>Email</th>
             <th>chức vụ</th>
+            <th></th>
+            <th></th>
         </tr>
         @foreach($admins as $admin)
         <tr>
@@ -20,6 +22,23 @@
             <td>{{ $admin->fullName }}</td>
             <td>{{ $admin->email }}</td>
             <td>{{ $admin->role }}</td>
+            <td>
+                <a href="{{ route('admin.edit', $admin->adminID) }}">
+                    <button>
+                        Sửa
+                    </button>
+                </a>
+            </td>
+            <td>
+                <form action="{{ route('admin.destroy', $admin->adminID) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa?')">
+                        Xóa
+                    </button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </table>

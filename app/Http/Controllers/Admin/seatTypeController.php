@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\seatType;
 use Illuminate\Http\Request;
+use App\Models\Admin\screenType;
 
 class seatTypeController extends Controller
 {
@@ -12,7 +14,8 @@ class seatTypeController extends Controller
      */
     public function index()
     {
-        //
+        $seatTypes = seatType::all();
+        return view('seatType.index', ['seatTypes' => $seatTypes]);
     }
 
     /**
@@ -20,7 +23,7 @@ class seatTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('seatType.create');
     }
 
     /**
@@ -28,7 +31,15 @@ class seatTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'seatTypeName' => 'required'
+        ]);
+
+        $seatTypes = new seatType();
+        $seatTypes->seatTypeName = request('seatTypeName');
+        $seatTypes->save();
+
+        return redirect()->route('seatType.index')->with('success', 'Tạo thành công');
     }
 
     /**

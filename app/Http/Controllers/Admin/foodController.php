@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\food;
 
 class foodController extends Controller
 {
@@ -12,7 +13,8 @@ class foodController extends Controller
      */
     public function index()
     {
-        //
+        $foods = food::all();
+        return view('food.index', ['foods' => $foods]);
     }
 
     /**
@@ -20,7 +22,7 @@ class foodController extends Controller
      */
     public function create()
     {
-        //
+        return view('food.create');
     }
 
     /**
@@ -28,7 +30,19 @@ class foodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'foodName' => 'required',
+           'price' => 'required',
+           'foodType' => 'required',
+        ]);
+
+        $foods = new food();
+        $foods->foodName = request('foodName');
+        $foods->price = request('price');
+        $foods->foodType = request('foodType');
+        $foods->save();
+
+        return redirect()->route('food.index')->with('success', 'Tạo thành công');
     }
 
     /**

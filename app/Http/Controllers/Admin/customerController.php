@@ -60,17 +60,37 @@ class customerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $customerID)
     {
-        //
+        $customers = customer::findOrFail($customerID);
+        return view('customer.edit', ['customers' => $customers]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $customerID)
     {
-        //
+        $customers = customer::findOrFail($customerID);
+
+        $request->validate([
+            'fullName' => 'required',
+            'email' => 'required|email|unique:customers,email,' . $customerID . ',customerID',
+            'phoneNumber' => 'required',
+            'address' => 'required',
+            'password' => 'nullable|min:8'
+        ]);
+
+        $customers->fullname = $request->input('fullName');
+        $customers->email = $request->input('email');
+        $customers->phoneNumber = $request->input('phoneNumber');
+        $customers->address = $request->input('address');
+        if ($request->input('password')) {
+            $customers->password = $request->input('password');
+        }
+        $customers->save();
+
+        return redirect()->route('customer.index')->with('success', 'Sửa thành công');
     }
 
     /**
@@ -78,6 +98,9 @@ class customerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customers = customer::findOrFail($id);
+        $customers->delete();
+
+        return redirect()->route('customer.index')->with('success', 'Xóa thành công');
     }
 }

@@ -58,17 +58,35 @@ class adminController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $adminID)
     {
-        //
+        $admins = admin::findOrFail($adminID);
+        return view('admin.edit', ['admins' => $admins]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $adminID)
     {
-        //
+        $admins = admin::findOrFail($adminID);
+
+        $request->validate([
+            'fullName' => 'required',
+            'email' => 'required|email|unique:admins,email,' . $adminID . ',adminID',
+            'password' => 'nullable|min:6',
+            'role' => 'required'
+        ]);
+
+        $admins->fullName = $request->input('fullName');
+        $admins->email = $request->input('email');
+        if ($request->input('password')) {
+            $admins->password = $request->input('password');
+        }
+        $admins->role = $request->input('role');
+        $admins->save();
+
+        return redirect()->route('admin.index')->with('success', 'Sửa thành công');
     }
 
     /**
@@ -76,6 +94,9 @@ class adminController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $admins = admin::findOrFail($id);
+        $admins->delete();
+
+        return redirect()->route('admin.index')->with('success', 'Xóa thành công');
     }
 }

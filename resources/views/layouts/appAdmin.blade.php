@@ -75,6 +75,18 @@
                 <i class="bi bi-ticket"></i> phương thức thanh toán
             </a>
         </nav>
+
+        <nav>
+            <a href="{{ route('food.index') }}">
+                <i class="bi bi-ticket"></i> Đồ ăn
+            </a>
+        </nav>
+
+        <nav>
+            <a href="{{ route('seatType.index') }}">
+                <i class="bi bi-ticket"></i> Kiểu ghế
+            </a>
+        </nav>
     </div>
 
     {{-- User --}}

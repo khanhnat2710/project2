@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class seatType extends Model
 {
-    protected $table = 'seatType';
+    protected $table = 'seat_types';
     protected $primaryKey = 'seatTypeID';
     public $timestamps = false;
 
