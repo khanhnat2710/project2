@@ -33,7 +33,7 @@
 
         <div>
             <button type="submit" class="btn btn-primary">
-                Thêm khách hàng
+                Cập nhật
             </button>
         </div>
     </form>

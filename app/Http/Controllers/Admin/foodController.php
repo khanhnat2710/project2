@@ -56,17 +56,31 @@ class foodController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $foodID)
     {
-        //
+        $foods = food::findOrFail($foodID);
+        return view('food.edit', ['foods' => $foods]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $foodID)
     {
-        //
+        $foods = food::findOrFail($foodID);
+
+        $request->validate([
+            'foodName' => 'required',
+            'price' => 'required',
+            'foodType' => 'required',
+        ]);
+
+        $foods->foodName = $request->input('foodName');
+        $foods->price = $request->input('price');
+        $foods->foodType = $request->input('foodType');
+        $foods->save();
+
+        return redirect()->route('food.index')->with('success', 'Sửa thành công');
     }
 
     /**
@@ -74,6 +88,9 @@ class foodController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $foods = food::findOrFail($id);
+        $foods->delete();
+
+        return redirect()->route('food.index')->with('success', 'Xóa thành công');
     }
 }

@@ -53,17 +53,27 @@ class seatTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $seatTypeID)
     {
-        //
+        $seatTypes = seatType::findOrFail($seatTypeID);
+        return view('seatType.edit', ['seatTypes' => $seatTypes]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $seatTypeID)
     {
-        //
+        $seatTypes = seatType::findOrFail($seatTypeID);
+
+        $request->validate([
+            'seatTypeName' => 'required'
+        ]);
+
+        $seatTypes->seatTypeName = $request->input('seatTypeName');
+        $seatTypes->save();
+
+        return redirect()->route('seatType.index')->with('success', 'Sửa thành công');
     }
 
     /**
@@ -71,6 +81,9 @@ class seatTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $seatTypes = seatType::findOrFail($id);
+        $seatTypes->delete();
+
+        return redirect()->route('seatType.index')->with('success', 'Xóa thành công');
     }
 }

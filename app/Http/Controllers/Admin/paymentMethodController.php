@@ -52,17 +52,27 @@ class paymentMethodController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $paymentID)
     {
-        //
+        $paymentMethods = payment_method::findOrFail($paymentID);
+        return view('paymentMethod.edit', ['paymentMethods' => $paymentMethods]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $paymentID)
     {
-        //
+        $paymentMethods = payment_method::findOrFail($paymentID);
+
+        $request->validate([
+           'name' => 'required'
+        ]);
+
+        $paymentMethods->name = $request->input('name');
+        $paymentMethods->save();
+
+        return redirect()->route('paymentMethod.index')->with('success', 'Tạo thành công');
     }
 
     /**
@@ -70,6 +80,9 @@ class paymentMethodController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $paymentMethods = payment_method::findOrFail($id);
+        $paymentMethods->delete();
+
+        return redirect()->route('paymentMethod.index')->with('success', 'Xóa thành công');
     }
 }
