@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class screenType extends Model
 {
-    protected $table = 'screenType';
+    protected $table = 'screen_types';
     protected $primaryKey = 'screenTypeID';
     public $timestamps = false;
 

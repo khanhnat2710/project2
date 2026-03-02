@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\screenType;
 
 class screeningTypeController extends Controller
 {
@@ -12,7 +13,8 @@ class screeningTypeController extends Controller
      */
     public function index()
     {
-        //
+        $screenTypes = screenType::all();
+        return view('screenType.index', ['screenTypes' => $screenTypes]);
     }
 
     /**
@@ -20,7 +22,7 @@ class screeningTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('screenType.create');
     }
 
     /**
@@ -28,7 +30,15 @@ class screeningTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'name' => 'required'
+        ]);
+
+        $screenTypes = new screenType();
+        $screenTypes->name = $request->input('name');
+        $screenTypes->save();
+
+        return redirect()->route('screenType.index')->with('success', 'Tạo thành công');
     }
 
     /**

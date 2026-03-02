@@ -87,6 +87,12 @@
                 <i class="bi bi-ticket"></i> Kiểu ghế
             </a>
         </nav>
+
+        <nav>
+            <a href="{{ route('screenType.index') }}">
+                <i class="bi bi-ticket"></i> Định dạng
+            </a>
+        </nav>
     </div>
 
     {{-- User --}}
