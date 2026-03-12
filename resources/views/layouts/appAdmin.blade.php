@@ -72,7 +72,7 @@
 
         <nav>
             <a href="{{ route('paymentMethod.index') }}">
-                <i class="bi bi-ticket"></i> phương thức thanh toán
+                <i class="bi bi-ticket"></i> Phương thức thanh toán
             </a>
         </nav>
 
@@ -84,13 +84,46 @@
 
         <nav>
             <a href="{{ route('seatType.index') }}">
-                <i class="bi bi-ticket"></i> Kiểu ghế
+                <i class="bi bi-ticket"></i> Loại ghế
             </a>
         </nav>
 
         <nav>
             <a href="{{ route('screenType.index') }}">
-                <i class="bi bi-ticket"></i> Định dạng
+                <i class="bi bi-ticket"></i> Định dạng phòng chiếu
+            </a>
+        </nav>
+
+        <nav>
+            <a href="{{ route('genre.index') }}">
+                <i class="bi bi-ticket"></i> Thể loại
+            </a>
+        </nav>
+
+        <nav>
+            <a href="{{ route('studio.index') }}">
+                <i class="bi bi-ticket"></i> Hãng sản xuất
+            </a>
+        </nav>
+
+        <nav>
+            <a href="{{ route('ageRating.index') }}">
+                <i class="bi bi-ticket"></i> Kiểm duyệt
+            </a>
+        </nav>
+        <nav>
+            <a href="{{ route('movies.index') }}">
+                <i class="bi bi-ticket"></i> Phim
+            </a>
+        </nav>
+        <nav>
+            <a href="{{ route('screeningRooms.index') }}">
+                <i class="bi bi-ticket"></i> Phòng chiếu
+            </a>
+        </nav>
+        <nav>
+            <a href="">
+                <i class="bi bi-ticket"></i> Quản lý ghế
             </a>
         </nav>
     </div>

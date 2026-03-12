@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('genre_details', function (Blueprint $table) {
-            $table->foreignId('movieID')->constrained('movies', 'movieID')->cascadeOnDelete();
+            $table->foreignId('movieID')->constrained('s', 'movieID')->cascadeOnDelete();
             $table->foreignId('genreID')->constrained('genres', 'genreID')->cascadeOnDelete();
             $table->primary(['movieID', 'genreID']);
         });

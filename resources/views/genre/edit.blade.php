@@ -1,13 +1,13 @@
 @extends('layouts.appAdmin')
 
 @section('content')
-    <form method="post" action="{{ route('screenType.update', $screenTypes->screenTypeID) }}">
+    <form method="post" action="{{ route('genre.update', $genres->genreID) }}">
         @csrf
         @method('PUT')
 
         <div>
-            <label for="name">Tên định dạng: </label>
-            <input type="text" name="name" id="name" value="{{ $screenTypes->name }}">
+            <label for="name">Tên thể loại: </label>
+            <input type="text" name="name" id="name" value="{{ $genres->name }}">
         </div>
 
         <div>

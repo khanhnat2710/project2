@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class movie extends Model
 {
-    protected $table = 'movie';
+    protected $table = 'movies';
     protected $primaryKey = 'movieID';
     public $timestamps = false;
 

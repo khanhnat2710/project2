@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ageRating extends Model
 {
-    protected $table = 'ageRating';
+    protected $table = 'age_ratings';
     protected $primaryKey = 'ageRatingID';
     public $timestamps = false;
 

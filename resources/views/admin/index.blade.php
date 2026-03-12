@@ -2,7 +2,7 @@
 
 @section('content')
     <a href="{{ route('admin.create') }}">
-        <button>
+        <button btn btn-primary m-3>
             Thêm nhân viên
         </button>
     </a>
