@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class genre extends Model
 {
-    protected $table = 'genre';
+    protected $table = 'genres';
     protected $primaryKey = 'genreID';
     public $timestamps = false;
 

@@ -1,33 +1,33 @@
 @extends('layouts.appAdmin')
 
 @section('content')
-    <a href="{{ route('screenType.create') }}">
+    <a href="{{ route('genre.create') }}">
         <button>
-            Thêm định dạng
+            Thêm thể loại
         </button>
     </a>
 
     <table class="table table-bordered">
         <tr>
             <th>STT</th>
-            <th>Tên định dạng</th>
+            <th>Tên thể loại</th>
             <th></th>
             <th></th>
         </tr>
 
-        @foreach($screenTypes as $screenType)
+        @foreach($genres as $genre)
             <tr>
-                <td>{{ $screenType->screenTypeID }}</td>
-                <td>{{ $screenType->name }}</td>
+                <td>{{ $genre->genreID }}</td>
+                <td>{{ $genre->name }}</td>
                 <td>
-                    <a href="{{ route('screenType.edit', $screenType->screenTypeID) }}">
+                    <a href="{{ route('genre.edit', $genre->genreID) }}">
                         <button>
                             Sửa
                         </button>
                     </a>
                 </td>
                 <td>
-                    <form action="{{ route('screenType.destroy', $screenType->screenTypeID) }}" method="POST">
+                    <form action="{{ route('genre.destroy', $genre->genreID) }}" method="POST">
                         @csrf
                         @method('DELETE')
 

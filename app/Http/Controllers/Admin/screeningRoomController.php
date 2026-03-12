@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\screeningRoom;
+use App\Models\screenType;
 
 class screeningRoomController extends Controller
 {
@@ -12,15 +14,10 @@ class screeningRoomController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $rooms = screeningRoom::all();
+        $screenTypes = ScreenType::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('admin.screeningRoom.index', compact('rooms','screenTypes'));
     }
 
     /**
@@ -28,15 +25,13 @@ class screeningRoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        screeningRoom::create([
+            'roomName' => $request->roomName,
+            'capacity' => $request->capacity,
+            'screenTypeID' => $request->screenTypeID
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->back()->with('success','Room added successfully');
     }
 
     /**
@@ -44,7 +39,8 @@ class screeningRoomController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $room = screeningRoom::findOrFail($id);
+        return response()->json($room);
     }
 
     /**
@@ -52,7 +48,15 @@ class screeningRoomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $room = screeningRoom::findOrFail($id);
+
+        $room->update([
+            'roomName' => $request->roomName,
+            'capacity' => $request->capacity,
+            'screenTypeID' => $request->screenTypeID
+        ]);
+
+        return redirect()->back()->with('success','Room updated successfully');
     }
 
     /**
@@ -60,6 +64,8 @@ class screeningRoomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        screeningRoom::destroy($id);
+
+        return redirect()->back()->with('success','Room deleted successfully');
     }
 }

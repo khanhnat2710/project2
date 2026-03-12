@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\genre;
 
 class genreController extends Controller
 {
@@ -12,7 +13,8 @@ class genreController extends Controller
      */
     public function index()
     {
-        //
+        $genres = genre::all();
+        return view('genre.index', ['genres' => $genres]);
     }
 
     /**
@@ -20,7 +22,7 @@ class genreController extends Controller
      */
     public function create()
     {
-        //
+        return view('genre.create');
     }
 
     /**
@@ -28,7 +30,15 @@ class genreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'name' => 'required'
+        ]);
+
+        $genres = new genre();
+        $genres->name = $request->input('name');
+        $genres->save();
+
+        return redirect()->route('genre.index')->with('success', 'Tạo thành công');
     }
 
     /**
@@ -42,17 +52,27 @@ class genreController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $genreID)
     {
-        //
+        $genres = genre::findOrFail($genreID);
+        return view('genre.edit', ['genres' => $genres]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $genreID)
     {
-        //
+        $genres = genre::findOrFail($genreID);
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $genres->name = $request->input('name');
+        $genres->save();
+
+        return redirect()->route('genre.index')->with('success', 'Sửa thành công');
     }
 
     /**
@@ -60,6 +80,9 @@ class genreController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $genres = genre::findOrFail($id);
+        $genres->delete();
+
+        return redirect()->route('genre.index')->with('success', 'Xóa thành công');
     }
 }

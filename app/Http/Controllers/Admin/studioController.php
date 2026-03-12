@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\studio;
 
 class studioController extends Controller
 {
@@ -12,7 +13,8 @@ class studioController extends Controller
      */
     public function index()
     {
-        //
+        $studios = studio::all();
+        return view('studio.index', ['studios' => $studios]);
     }
 
     /**
@@ -20,7 +22,7 @@ class studioController extends Controller
      */
     public function create()
     {
-        //
+        return view('studio.create');
     }
 
     /**
@@ -28,7 +30,15 @@ class studioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $studio = new studio();
+        $studio->name = $request->name;
+        $studio->save();
+
+        return redirect()->route('studio.index')->with('success', 'Tạo thành công.');
     }
 
     /**
@@ -42,17 +52,26 @@ class studioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $studioID)
     {
-        //
+        $studio = studio::findOrFail($studioID);
+        return view('studio.edit', ['studio' => $studio]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $studioID)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $studio = studio::findOrFail($studioID);
+        $studio->name = $request->name;
+        $studio->save();
+
+        return redirect()->route('studio.index')->with('success', 'Cập nhật thành công.');
     }
 
     /**
@@ -60,6 +79,9 @@ class studioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $studio = studio::findOrFail($id);
+        $studio->delete();
+
+        return redirect()->route('studio.index')->with('success', 'Xóa thành công.');
     }
 }

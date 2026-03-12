@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\screeningRoom;
 use App\Models\Admin\screenType;
 
 class screeningTypeController extends Controller
@@ -52,17 +53,27 @@ class screeningTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $screenTypeID)
     {
-        //
+        $screenTypes = screenType::findOrFail($screenTypeID);
+        return view('screenType.edit', ['screenTypes' => $screenTypes]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $screenTypeID)
     {
-        //
+        $screenTypes = screenType::findOrFail($screenTypeID);
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $screenTypes->name = $request->input('name');
+        $screenTypes->save();
+
+        return redirect()->route('screenType.index')->with('success', 'Sửa thành công');
     }
 
     /**
@@ -70,6 +81,9 @@ class screeningTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $screenTypes = screenType::findOrFail($id);
+        $screenTypes->delete();
+
+        return redirect()->route('screenType.index')->with('success', 'Xóa thành công');
     }
 }

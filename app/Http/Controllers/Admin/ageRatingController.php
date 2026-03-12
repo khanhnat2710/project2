@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\ageRating;
 
 class ageRatingController extends Controller
 {
@@ -12,7 +13,8 @@ class ageRatingController extends Controller
      */
     public function index()
     {
-        //
+        $ageRatings = ageRating::all();
+        return view('ageRating.index', ['ageRatings' => $ageRatings]);
     }
 
     /**
@@ -20,7 +22,7 @@ class ageRatingController extends Controller
      */
     public function create()
     {
-        //
+        return view('ageRating.create');
     }
 
     /**
@@ -28,7 +30,17 @@ class ageRatingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required',
+            'description' => 'required'
+        ]);
+
+        $ageRatings = new ageRating();
+        $ageRatings->code = $request->input('code');
+        $ageRatings->description = $request->input('description');
+        $ageRatings->save();
+
+        return redirect()->route('ageRating.index')->with('success', 'Tạo thành công');
     }
 
     /**
