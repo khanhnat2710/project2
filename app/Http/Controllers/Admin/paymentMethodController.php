@@ -14,7 +14,7 @@ class paymentMethodController extends Controller
     public function index()
     {
         $paymentMethods = payment_method::all();
-        return view('paymentMethod.index', ['paymentMethods' => $paymentMethods]);
+        return view('admins.paymentMethod.index', ['paymentMethods' => $paymentMethods]);
     }
 
     /**
@@ -22,7 +22,7 @@ class paymentMethodController extends Controller
      */
     public function create()
     {
-        return view('paymentMethod.create');
+        return view('admins.paymentMethod.create');
     }
 
     /**
@@ -31,7 +31,7 @@ class paymentMethodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'name' => 'required'
+            'name' => 'required'
         ]);
 
         $paymentMethods = new payment_method();
@@ -55,7 +55,7 @@ class paymentMethodController extends Controller
     public function edit(string $paymentID)
     {
         $paymentMethods = payment_method::findOrFail($paymentID);
-        return view('paymentMethod.edit', ['paymentMethods' => $paymentMethods]);
+        return view('admins.paymentMethod.edit', ['paymentMethods' => $paymentMethods]);
     }
 
     /**
@@ -66,7 +66,7 @@ class paymentMethodController extends Controller
         $paymentMethods = payment_method::findOrFail($paymentID);
 
         $request->validate([
-           'name' => 'required'
+            'name' => 'required'
         ]);
 
         $paymentMethods->name = $request->input('name');

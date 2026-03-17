@@ -3,27 +3,41 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Admin\Customer;
+use App\Models\Admin\Admin;
+use App\Models\Admin\payment_method;
 
 class foodInvoice extends Model
 {
-    protected $table = 'foodInvoice';
+    protected $table = 'food_invoices';
+
     protected $primaryKey = 'foodInvoiceID';
+
     public $timestamps = false;
 
-    public function admin() {
-        return $this->belongsTo(Admin::class, 'adminID');
+    protected $fillable = [
+        'orderDate',
+        'total',
+        'customerID',
+        'adminID',
+        'paymentID'
+    ];
+
+    // customer
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class,'customerID');
     }
 
-    public function customer() {
-        return $this->belongsTo(\App\Models\Customer::class, 'customerID');
+    // admin
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class,'adminID');
     }
 
-    public function foods() {
-        return $this->belongsToMany(
-            Food::class,
-            'foodInvoiceDetail',
-            'foodInvoiceID',
-            'foodID'
-        )->withPivot('quantity');
+    // payment
+    public function payment()
+    {
+        return $this->belongsTo(payment_method::class,'paymentID');
     }
 }

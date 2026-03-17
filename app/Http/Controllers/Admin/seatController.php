@@ -4,62 +4,85 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\Seat;
+use App\Models\Admin\screeningRoom;
+use App\Models\Admin\SeatType;
 
-class seatController extends Controller
+class SeatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    // LIST
     public function index()
     {
-        //
+        $seats = Seat::with(['screeningRoom','seatType'])->get();
+        $rooms = screeningRoom::all();
+        $seatTypes = SeatType::all();
+
+        return view('admins.seat.index', compact('seats','rooms','seatTypes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // FORM CREATE
     public function create()
     {
-        //
+        $rooms = screeningRoom::all();
+        $seatTypes = SeatType::all();
+
+        return view('admins.seat.create', compact('rooms','seatTypes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // STORE
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rowSeat' => 'required',
+            'colSeat' => 'required',
+            'roomID' => 'required',
+            'seatTypeID' => 'required'
+        ]);
+
+        Seat::create([
+            'rowSeat' => $request->rowSeat,
+            'colSeat' => $request->colSeat,
+            'roomID' => $request->roomID,
+            'seatTypeID' => $request->seatTypeID
+        ]);
+
+        return redirect()->route('seat.index')
+            ->with('success','Seat added successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // EDIT FORM
     public function edit(string $id)
     {
-        //
+        $seat = Seat::findOrFail($id);
+        $rooms = screeningRoom::all();
+        $seatTypes = SeatType::all();
+
+        return view('admins.seat.edit', compact('seat','rooms','seatTypes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // UPDATE
     public function update(Request $request, string $id)
     {
-        //
+        $seat = Seat::findOrFail($id);
+
+        $seat->update([
+            'rowSeat' => $request->rowSeat,
+            'colSeat' => $request->colSeat,
+            'roomID' => $request->roomID,
+            'seatTypeID' => $request->seatTypeID
+        ]);
+
+        return redirect()->route('seat.index')
+            ->with('success','Cập nhập ghế thành công');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // DELETE
     public function destroy(string $id)
     {
-        //
+        Seat::destroy($id);
+
+        return redirect()->route('seat.index')
+            ->with('success','Xóa ghế thành công');
     }
 }

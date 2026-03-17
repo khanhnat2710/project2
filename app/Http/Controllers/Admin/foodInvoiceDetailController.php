@@ -4,62 +4,88 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\foodInvoiceDetail;
+use App\Models\Admin\foodInvoice;
+use App\Models\Admin\food;
 
-class foodInvoiceDetailController extends Controller
+class FoodInvoiceDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    // Danh sách
     public function index()
     {
-        //
+        $details = foodInvoiceDetail::with(['foodInvoice','food'])->get();
+
+        return view('admins.foodInvoiceDetail.index', compact('details'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Form thêm
     public function create()
     {
-        //
+        $foodInvoices = foodInvoice::all();
+        $foods = food::all();
+
+        return view('admins.foodInvoiceDetail.create', compact('foodInvoices','foods'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Lưu dữ liệu
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'foodInvoiceID' => 'required',
+            'foodID' => 'required',
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        foodInvoiceDetail::create($request->all());
+
+        return redirect()->route('foodInvoiceDetail.index')
+            ->with('success','Created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Form sửa
+    public function edit($foodInvoiceID,$foodID)
     {
-        //
+        $detail = foodInvoiceDetail::where('foodInvoiceID',$foodInvoiceID)
+            ->where('foodID',$foodID)
+            ->firstOrFail();
+
+        $foodInvoices = foodInvoice::all();
+        $foods = food::all();
+
+        return view('admins.foodInvoiceDetail.edit', compact('detail','foodInvoices','foods'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Cập nhật
+    public function update(Request $request,$foodInvoiceID,$foodID)
     {
-        //
+        $detail = foodInvoiceDetail::where('foodInvoiceID',$foodInvoiceID)
+            ->where('foodID',$foodID)
+            ->firstOrFail();
+
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $detail->update([
+            'quantity'=>$request->quantity
+        ]);
+
+        return redirect()->route('foodInvoiceDetail.index')
+            ->with('success','Updated successfully');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Xóa
+    public function destroy($foodInvoiceID,$foodID)
     {
-        //
+        $detail = foodInvoiceDetail::where('foodInvoiceID',$foodInvoiceID)
+            ->where('foodID',$foodID)
+            ->firstOrFail();
+
+        $detail->delete();
+
+        return redirect()->route('foodInvoiceDetail.index')
+            ->with('success','Deleted successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

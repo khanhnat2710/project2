@@ -14,7 +14,7 @@ class ageRatingController extends Controller
     public function index()
     {
         $ageRatings = ageRating::all();
-        return view('ageRating.index', ['ageRatings' => $ageRatings]);
+        return view('admins.ageRating.index', compact('ageRatings'));
     }
 
     /**
@@ -22,7 +22,7 @@ class ageRatingController extends Controller
      */
     public function create()
     {
-        return view('ageRating.create');
+        return view('admins.ageRating.create');
     }
 
     /**
@@ -35,20 +35,13 @@ class ageRatingController extends Controller
             'description' => 'required'
         ]);
 
-        $ageRatings = new ageRating();
-        $ageRatings->code = $request->input('code');
-        $ageRatings->description = $request->input('description');
-        $ageRatings->save();
+        $ageRating = new ageRating();
+        $ageRating->code = $request->code;
+        $ageRating->description = $request->description;
+        $ageRating->save();
 
-        return redirect()->route('ageRating.index')->with('success', 'Tạo thành công');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('ageRating.index')
+            ->with('success','Tạo thành công');
     }
 
     /**
@@ -56,7 +49,9 @@ class ageRatingController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $ageRating = ageRating::findOrFail($id);
+
+        return view('admins.ageRating.edit', compact('ageRating'));
     }
 
     /**
@@ -64,7 +59,19 @@ class ageRatingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'code' => 'required',
+            'description' => 'required'
+        ]);
+
+        $ageRating = ageRating::findOrFail($id);
+
+        $ageRating->code = $request->code;
+        $ageRating->description = $request->description;
+        $ageRating->save();
+
+        return redirect()->route('ageRating.index')
+            ->with('success','Cập nhật thành công');
     }
 
     /**
@@ -72,6 +79,10 @@ class ageRatingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $ageRating = ageRating::findOrFail($id);
+        $ageRating->delete();
+
+        return redirect()->route('ageRating.index')
+            ->with('success','Xóa thành công');
     }
 }

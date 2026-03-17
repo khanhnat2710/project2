@@ -1,31 +1,49 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Admin\foodInvoice;
+use App\Models\Admin\foodInvoiceDetail;
+use App\Models\Admin\Food;
 
-class foodInvoiceDetail extends Model
+class foodInvoiceDetailController extends Controller
 {
-    protected $table = 'foodInvoiceDetail';
-
-    // composite primary key
-    protected $primaryKey = null;
-    public $incrementing = false;
-
-    public $timestamps = false;
-
-    protected $fillable = [
-        'foodInvoiceID',
-        'foodID',
-        'quantity'
-    ];
-    public function foodInvoice()
+    public function index($id)
     {
-        return $this->belongsTo(FoodInvoice::class, 'foodInvoiceID');
+        $invoice = foodInvoice::with('customer')->findOrFail($id);
+        $foods = Food::all();
+
+        return view('admin.foodInvoice.detail', compact('invoice','foods'));
     }
 
-    public function food()
+    public function store(Request $request, $id)
     {
-        return $this->belongsTo(Food::class, 'foodID');
+        $invoice = foodInvoice::findOrFail($id);
+
+        $total = 0;
+
+        foreach($request->foods as $foodID => $qty)
+        {
+            if($qty > 0)
+            {
+                $food = Food::find($foodID);
+
+                foodInvoiceDetail::create([
+                    'foodInvoiceID' => $id,
+                    'foodID' => $foodID,
+                    'quantity' => $qty
+                ]);
+
+                $total += $food->price * $qty;
+            }
+        }
+
+        $invoice->update(['total'=>$total]);
+
+        return redirect()
+            ->route('foodInvoice.index')
+            ->with('invoice', foodInvoice::with('customer')->find($id));
     }
 }

@@ -14,7 +14,7 @@ class adminController extends Controller
     public function index()
     {
         $admins = admin::all();
-        return view('admin.index', ['admins' => $admins]);
+        return view('admins.admin.index', ['admins' => $admins]);
     }
 
     /**
@@ -22,7 +22,7 @@ class adminController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        return view('admins.admin.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class adminController extends Controller
     public function edit(string $adminID)
     {
         $admins = admin::findOrFail($adminID);
-        return view('admin.edit', ['admins' => $admins]);
+        return view('admins.admin.edit', ['admins' => $admins]);
     }
 
     /**

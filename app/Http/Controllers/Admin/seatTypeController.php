@@ -15,7 +15,7 @@ class seatTypeController extends Controller
     public function index()
     {
         $seatTypes = seatType::all();
-        return view('seatType.index', ['seatTypes' => $seatTypes]);
+        return view('admins.seatType.index', ['seatTypes' => $seatTypes]);
     }
 
     /**
@@ -23,7 +23,7 @@ class seatTypeController extends Controller
      */
     public function create()
     {
-        return view('seatType.create');
+        return view('admins.seatType.create');
     }
 
     /**

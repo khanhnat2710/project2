@@ -6,7 +6,15 @@
     @method('PUT')
     <div>
         <label for="name">Tên nhà sản xuất: </label>
-        <input type="text" name="name" id="name" value="{{ $studio->name }}" placeholder="Nhập tên nhà sản xuất">
+        <input type="text" name="name"
+               class="form-control @error('name') is-invalid @enderror"
+               value="{{ old('name') }}">
+
+        @error('name')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
     </div>
     <div>
         <button type="submit" class="btn btn-primary">

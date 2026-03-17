@@ -15,7 +15,7 @@ class screeningTypeController extends Controller
     public function index()
     {
         $screenTypes = screenType::all();
-        return view('screenType.index', ['screenTypes' => $screenTypes]);
+        return view('admins.screenType.index', ['screenTypes' => $screenTypes]);
     }
 
     /**
@@ -23,7 +23,7 @@ class screeningTypeController extends Controller
      */
     public function create()
     {
-        return view('screenType.create');
+        return view('admins.screenType.create');
     }
 
     /**
@@ -32,7 +32,7 @@ class screeningTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'name' => 'required'
+            'name' => 'required'
         ]);
 
         $screenTypes = new screenType();
@@ -56,7 +56,7 @@ class screeningTypeController extends Controller
     public function edit(string $screenTypeID)
     {
         $screenTypes = screenType::findOrFail($screenTypeID);
-        return view('screenType.edit', ['screenTypes' => $screenTypes]);
+        return view('admins.screenType.edit', ['screenTypes' => $screenTypes]);
     }
 
     /**

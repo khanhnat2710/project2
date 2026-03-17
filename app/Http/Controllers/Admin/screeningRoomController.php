@@ -4,48 +4,63 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\screeningRoom;
-use App\Models\screenType;
+use App\Models\Admin\screeningRoom;
+use App\Models\Admin\screenType;
 
 class screeningRoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    // READ - danh sách
     public function index()
     {
-        $rooms = screeningRoom::all();
-        $screenTypes = ScreenType::all();
+        $room = screeningRoom::all();
+        $screenTypes = screenType::all();
 
-        return view('admin.screeningRoom.index', compact('rooms','screenTypes'));
+        return view('admins.screeningRoom.index', compact('room', 'screenTypes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    // FORM CREATE
+    public function create()
+    {
+        $screenTypes = screenType::all();
+
+        return view('admins.screeningRoom.create', compact('screenTypes'));
+    }
+
+
+    // CREATE
     public function store(Request $request)
     {
+        $request->validate([
+            'roomName' => 'required',
+            'capacity' => 'required|integer',
+            'screenTypeID' => 'required'
+        ]);
+
         screeningRoom::create([
             'roomName' => $request->roomName,
             'capacity' => $request->capacity,
             'screenTypeID' => $request->screenTypeID
         ]);
 
-        return redirect()->back()->with('success','Room added successfully');
+        return redirect()->route('screeningRoom.index')
+            ->with('success', 'Room added successfully');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
+
+    // FORM EDIT
     public function edit(string $id)
     {
         $room = screeningRoom::findOrFail($id);
-        return response()->json($room);
+        $screenTypes = screenType::all();
+
+        return view('admins.screeningRoom.edit', compact('room', 'screenTypes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+    // UPDATE
     public function update(Request $request, string $id)
     {
         $room = screeningRoom::findOrFail($id);
@@ -56,16 +71,17 @@ class screeningRoomController extends Controller
             'screenTypeID' => $request->screenTypeID
         ]);
 
-        return redirect()->back()->with('success','Room updated successfully');
+        return redirect()->route('screeningRoom.index')
+            ->with('success', 'Room updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
+    // DELETE
     public function destroy(string $id)
     {
         screeningRoom::destroy($id);
 
-        return redirect()->back()->with('success','Room deleted successfully');
+        return redirect()->route('screeningRoom.index')
+            ->with('success', 'Room deleted successfully');
     }
 }

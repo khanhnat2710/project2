@@ -13,31 +13,74 @@ class movieController extends Controller
     public function index()
     {
         $movies = movie::with(['ageRating','studio'])->get();
-        $ageRatings = AgeRating::all();
-        $studios = Studio::all();
+        $ageRatings = ageRating::all();
+        $studios = studio::all();
 
-        return view('movies.index', compact('movies','ageRatings','studios'));
+        return view('admins.movies.index', compact('movies','ageRatings','studios'));
     }
 
     public function store(Request $request)
     {
-        movie::create($request->all());
+        $data = $request->only([
+            'movieTitle',
+            'director',
+            'releaseDate',
+            'trailer',
+            'description',
+            'ageRatingID',
+            'studioID'
+        ]);
 
-        return redirect()->route('movies.index');
+        // upload poster
+        if ($request->hasFile('poster')) {
+
+            $file = $request->file('poster');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+
+            $file->move(public_path('posters'), $filename);
+
+            $data['poster'] = $filename;
+        }
+
+        movie::create($data);
+
+        return redirect()->route('movies.index')->with('success','Thêm phim thành công');
     }
 
     public function update(Request $request, $id)
     {
-        $movie = Movie::findOrFail($id);
-        $movie->update($request->all());
+        $movie = movie::findOrFail($id);
 
-        return redirect()->route('movies.index')->with('success', 'Cập nhật thành công');
+        $data = $request->only([
+            'movieTitle',
+            'director',
+            'releaseDate',
+            'trailer',
+            'description',
+            'ageRatingID',
+            'studioID'
+        ]);
+
+        // upload poster mới nếu có
+        if ($request->hasFile('poster')) {
+
+            $file = $request->file('poster');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+
+            $file->move(public_path('posters'), $filename);
+
+            $data['poster'] = $filename;
+        }
+
+        $movie->update($data);
+
+        return redirect()->route('movies.index')->with('success','Cập nhật thành công');
     }
 
     public function destroy($id)
     {
         movie::destroy($id);
 
-        return redirect()->route('movies.index');
+        return redirect()->route('movies.index')->with('success','Xóa thành công');
     }
 }

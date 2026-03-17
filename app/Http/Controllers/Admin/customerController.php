@@ -14,7 +14,7 @@ class customerController extends Controller
     public function index()
     {
         $customers = customer::all();
-        return view('customer.index', ['customers' => $customers]);
+        return view('admins.customer.index', ['customers' => $customers]);
     }
 
     /**
@@ -22,7 +22,7 @@ class customerController extends Controller
      */
     public function create()
     {
-        return view('customer/create');
+        return view('admins.customer.create');
     }
 
     /**
@@ -49,21 +49,10 @@ class customerController extends Controller
         return redirect()->route('customer.index')->with('success', 'Tạo thành công');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $customerID)
+    function edit(string $customerID)
     {
         $customers = customer::findOrFail($customerID);
-        return view('customer.edit', ['customers' => $customers]);
+        return view('admins.customer.edit', ['customers' => $customers]);
     }
 
     /**

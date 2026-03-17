@@ -14,7 +14,7 @@ class foodController extends Controller
     public function index()
     {
         $foods = food::all();
-        return view('food.index', ['foods' => $foods]);
+        return view('admins.food.index', ['foods' => $foods]);
     }
 
     /**
@@ -22,7 +22,7 @@ class foodController extends Controller
      */
     public function create()
     {
-        return view('food.create');
+        return view('admins.food.create');
     }
 
     /**
@@ -31,9 +31,9 @@ class foodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'foodName' => 'required',
-           'price' => 'required',
-           'foodType' => 'required',
+            'foodName' => 'required',
+            'price' => 'required',
+            'foodType' => 'required',
         ]);
 
         $foods = new food();
@@ -59,7 +59,7 @@ class foodController extends Controller
     public function edit(string $foodID)
     {
         $foods = food::findOrFail($foodID);
-        return view('food.edit', ['foods' => $foods]);
+        return view('admins.food.edit', ['foods' => $foods]);
     }
 
     /**

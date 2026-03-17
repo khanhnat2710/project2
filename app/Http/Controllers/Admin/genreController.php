@@ -14,7 +14,7 @@ class genreController extends Controller
     public function index()
     {
         $genres = genre::all();
-        return view('genre.index', ['genres' => $genres]);
+        return view('admins.genre.index', ['genres' => $genres]);
     }
 
     /**
@@ -22,7 +22,7 @@ class genreController extends Controller
      */
     public function create()
     {
-        return view('genre.create');
+        return view('admins.genre.create');
     }
 
     /**
@@ -31,7 +31,7 @@ class genreController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'name' => 'required'
+            'name' => 'required'
         ]);
 
         $genres = new genre();

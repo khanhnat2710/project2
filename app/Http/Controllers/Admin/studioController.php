@@ -14,7 +14,7 @@ class studioController extends Controller
     public function index()
     {
         $studios = studio::all();
-        return view('studio.index', ['studios' => $studios]);
+        return view('admins.studio.index', ['studios' => $studios]);
     }
 
     /**
@@ -22,7 +22,7 @@ class studioController extends Controller
      */
     public function create()
     {
-        return view('studio.create');
+        return view('admins.studio.create');
     }
 
     /**
@@ -31,7 +31,10 @@ class studioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required|unique:studios,name'
+        ],[
+            'name.required' => 'Tên phòng chiếu không được để trống.',
+            'name.unique' => 'Tên phòng chiếu đã tồn tại.'
         ]);
 
         $studio = new studio();
@@ -41,13 +44,6 @@ class studioController extends Controller
         return redirect()->route('studio.index')->with('success', 'Tạo thành công.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -55,7 +51,7 @@ class studioController extends Controller
     public function edit(string $studioID)
     {
         $studio = studio::findOrFail($studioID);
-        return view('studio.edit', ['studio' => $studio]);
+        return view('admins.studio.edit', ['studio' => $studio]);
     }
 
     /**

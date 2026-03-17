@@ -4,62 +4,81 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\FoodInvoice;
+use App\Models\Admin\Customer;
+use App\Models\Admin\Admin;
+use App\Models\Admin\payment_method;
 
-class foodInvoiceController extends Controller
+class FoodInvoiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    // LIST
     public function index()
     {
-        //
+        $customers = Customer::all();
+        $invoice = FoodInvoice::with(['customer','admin','payment'])->get();
+
+        return view('admins.foodInvoice.index',compact('invoice', 'customers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // FORM CREATE
     public function create()
     {
-        //
+        $customers = Customer::all();
+        $admins = Admin::all();
+        $payments = payment_method::all();
+
+        return view('admins.foodInvoice.create',
+            compact('customers','admins','payments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // STORE
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'orderDate'=>'required',
+            'total'=>'required|numeric',
+            'customerID'=>'required',
+            'adminID'=>'required',
+            'paymentID'=>'required'
+        ]);
+
+        FoodInvoice::create($request->all());
+
+        return redirect()->route('foodInvoice.index')
+            ->with('success','Invoice created');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // EDIT FORM
+    public function edit($id)
     {
-        //
+        $invoice = FoodInvoice::findOrFail($id);
+
+        $customers = Customer::all();
+        $admins = Admin::all();
+        $payments = payment_method::all();
+
+        return view('admins.foodInvoice.edit',
+            compact('invoice','customers','admins','payments'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // UPDATE
+    public function update(Request $request,$id)
     {
-        //
+        $invoice = FoodInvoice::findOrFail($id);
+
+        $invoice->update($request->all());
+
+        return redirect()->route('foodInvoice.index')
+            ->with('success','Invoice updated');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // DELETE
+    public function destroy($id)
     {
-        //
-    }
+        FoodInvoice::destroy($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('foodInvoice.index')
+            ->with('success','Invoice deleted');
     }
 }

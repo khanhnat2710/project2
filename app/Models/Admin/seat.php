@@ -4,21 +4,30 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 
-class seat extends Model
+class Seat extends Model
 {
-    protected $table = 'seat';
+    protected $table = 'seats';
+
     protected $primaryKey = 'seatID';
+
     public $timestamps = false;
 
-    public function room() {
-        return $this->belongsTo(ScreeningRoom::class, 'roomID');
+    protected $fillable = [
+        'rowSeat',
+        'colSeat',
+        'roomID',
+        'seatTypeID'
+    ];
+
+    // quan hệ phòng chiếu
+    public function screeningRoom()
+    {
+        return $this->belongsTo(screeningRoom::class, 'roomID');
     }
 
-    public function seatType() {
+    // quan hệ loại ghế
+    public function seatType()
+    {
         return $this->belongsTo(SeatType::class, 'seatTypeID');
-    }
-
-    public function tickets() {
-        return $this->hasMany(Ticket::class, 'seatID');
     }
 }
