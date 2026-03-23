@@ -17,7 +17,7 @@ return new class extends Migration
             $table->time('startTime');
             $table->time('endTime');
 
-            $table->foreignId('movieID')->constrained('s', 'movieID');
+            $table->foreignId('movieID')->constrained('movies', 'movieID');
             $table->foreignId('roomID')->constrained('screening_rooms', 'roomID');
         });
     }

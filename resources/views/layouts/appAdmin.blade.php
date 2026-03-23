@@ -316,7 +316,7 @@
 
         </div>
 
-        <form action="{{ route('welcome') }}" method="POST">
+        <form action="{{ route('login') }}" method="POST">
             @csrf
             <button class="btn btn-light w-100 btn-sm">
                 <i class="bi bi-box-arrow-right"></i> Đăng xuất
